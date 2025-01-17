@@ -57,12 +57,19 @@ namespace workshop.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> UpdatePet(IRepository repository, int id,  PetPut model)
         {
-            var target = repository.GetPet(id);
-            if (target == null) return Results.NotFound();
-            if (model.Name != null) target.Name = model.Name;
-            if (model.Species != null) target.Species = model.Species;
-            if (model.Age != null) target.Age = model.Age.Value;
-            return Results.Ok(target);
+            try
+            {
+                var target = repository.GetPet(id);
+                if (target == null) return Results.NotFound();
+                if (model.Name != null) target.Name = model.Name;
+                if (model.Species != null) target.Species = model.Species;
+                if (model.Age != null) target.Age = model.Age.Value;
+                return Results.Ok(target);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
 
     }

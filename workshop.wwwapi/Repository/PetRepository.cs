@@ -7,28 +7,26 @@ namespace workshop.wwwapi.Repository
     {
         public Pet AddPet(Pet entity)
         {
-            int id = PetsData.Pets.Max(p => p.Id) + 1;
-            PetsData.Pets.Add(entity);
-            return entity;
+            
+            return PetsData.Add(entity);
+            
         }
 
-        public Pet DeletePet(int id)
+        public bool Delete(int id)
         {
-            var result = PetsData.Pets.FirstOrDefault(p => p.Id == id);
-            PetsData.Pets.RemoveAll(p => p.Id==id);
-            return result;
+
+            return PetsData.Remove(id);
+            
         }
 
         public Pet GetPet(int id)
-        {
-            var result = PetsData.Pets.FirstOrDefault(p => p.Id == id);
-            return result;
+        {            
+            return PetsData.Get(id);
         }
 
         public IEnumerable<Pet> GetPets()
         {
-            var results = PetsData.Pets;
-            return results;
+            return PetsData.Pets;            
         }
     }
 }

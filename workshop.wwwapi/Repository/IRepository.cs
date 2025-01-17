@@ -6,7 +6,7 @@ namespace workshop.wwwapi.Repository
     {
         IEnumerable<Pet> GetPets();
         Pet GetPet(int id);
-        Pet DeletePet(int id);
+        bool Delete(int id);
         Pet AddPet(Pet pet);
     }
 }

@@ -21,11 +21,15 @@ namespace workshop.wwwapi.Endpoints
         public static async Task<IResult> GetPets(IRepository repository)
         {
             var pets = repository.GetPets();
-            return Results.Ok(pets);
+            return TypedResults.Ok(pets);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public static async Task<IResult> AddPet(IRepository repository, PetPost model)
         {
+            try
+            {
+
             Pet pet = new Pet()
             {
                 Name = model.Name,
@@ -34,7 +38,12 @@ namespace workshop.wwwapi.Endpoints
             };
             repository.AddPet(pet);
 
-            return Results.Created($"https://localhost:7010/pets/{pet.Id}", pet);
+            return TypedResults.Created($"https://localhost:7010/pets/{pet.Id}", pet);
+            }
+            catch (Exception ex)
+            {
+                return TypedResults.Problem(ex.Message);
+            }
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

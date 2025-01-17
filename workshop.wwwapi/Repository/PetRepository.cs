@@ -3,11 +3,10 @@ using workshop.wwwapi.Models;
 
 namespace workshop.wwwapi.Repository
 {
-    public class PetRepository : IRepository
+    public class PetRepository  : IRepository
     {
         public Pet AddPet(Pet entity)
-        {
-            
+        {            
             return PetsData.Add(entity);
             
         }

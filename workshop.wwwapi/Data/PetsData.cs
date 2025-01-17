@@ -15,7 +15,7 @@ namespace workshop.wwwapi.Data
         }
         public static Pet Get(int id)
         {
-            return _pets.FirstOrDefault(p => p.Id == id);
+            return _pets.FirstOrDefault(p => p.Id == id)!;
         }
         public static Pet Add(Pet entity)
         {            

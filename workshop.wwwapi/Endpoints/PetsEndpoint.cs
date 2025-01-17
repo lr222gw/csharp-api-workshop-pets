@@ -14,6 +14,7 @@ namespace workshop.wwwapi.Endpoints
             pets.MapGet("/", GetPets);
             pets.MapPost("/", AddPet);
             pets.MapDelete("/{id}", DeletePet);
+            pets.MapPut("/{id}", UpdatePet);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -22,7 +23,7 @@ namespace workshop.wwwapi.Endpoints
             var pets = repository.GetPets();
             return Results.Ok(pets);
         }
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public static async Task<IResult> AddPet(IRepository repository, PetPost model)
         {
             Pet pet = new Pet()
@@ -33,12 +34,13 @@ namespace workshop.wwwapi.Endpoints
             };
             repository.AddPet(pet);
 
-            return Results.Ok(pet);
+            return Results.Created($"https://localhost:7010/pets/{pet.Id}", pet);
         }
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        private static async Task<IResult> DeletePet(IRepository repository, int id)
-        {
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> DeletePet(IRepository repository, int id)
+        {                        
             try
             {
                 var model = repository.GetPet(id);
@@ -50,5 +52,18 @@ namespace workshop.wwwapi.Endpoints
                 return TypedResults.Problem(ex.Message);
             }
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> UpdatePet(IRepository repository, int id,  PetPut model)
+        {
+            var target = repository.GetPet(id);
+            if (target == null) return Results.NotFound();
+            if (model.Name != null) target.Name = model.Name;
+            if (model.Species != null) target.Species = model.Species;
+            if (model.Age != null) target.Age = model.Age.Value;
+            return Results.Ok(target);
+        }
+
     }
 }

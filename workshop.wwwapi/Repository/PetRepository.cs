@@ -5,27 +5,35 @@ namespace workshop.wwwapi.Repository
 {
     public class PetRepository  : IRepository
     {
+        private DataContext _db;
+
+        public PetRepository(DataContext db)
+        {
+            _db = db;
+        }
         public Pet AddPet(Pet entity)
-        {            
-            return PetsData.Add(entity);
+        {       
+            _db.Pets.Add(entity);
+            _db.SaveChanges();
+            return entity;
             
         }
 
         public bool Delete(int id)
         {
-
-            return PetsData.Remove(id);
+            throw new System.NotImplementedException();
+            
             
         }
 
         public Pet GetPet(int id)
-        {            
-            return PetsData.Get(id);
+        {
+            throw new System.NotImplementedException();
         }
 
         public IEnumerable<Pet> GetPets()
         {
-            return PetsData.Pets;            
+            return _db.Pets.ToList();
         }
     }
 }

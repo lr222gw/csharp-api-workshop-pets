@@ -3,6 +3,9 @@ using Scalar.AspNetCore;
 using workshop.wwwapi.Data;
 using workshop.wwwapi.Endpoints;
 using workshop.wwwapi.Repository;
+using workshop.wwwapi.Validators;
+using FluentValidation;
+using System.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IRepository, PetRepository>();
 builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("Pets"));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(PetPostValidator));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

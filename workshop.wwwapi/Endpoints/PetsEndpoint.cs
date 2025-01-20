@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using workshop.wwwapi.Models;
 using workshop.wwwapi.Repository;
+using workshop.wwwapi.Validators;
 using workshop.wwwapi.ViewModel;
 
 namespace workshop.wwwapi.Endpoints
@@ -12,7 +13,7 @@ namespace workshop.wwwapi.Endpoints
             var pets = app.MapGroup("pets");
 
             pets.MapGet("/", GetPets);
-            pets.MapPost("/", AddPet);
+            pets.MapPost("/", AddPet).AddEndpointFilter<ValidationFilter<PetPost>>(); 
             pets.MapDelete("/{id}", DeletePet);
             pets.MapPut("/{id}", UpdatePet);
         }

@@ -35,3 +35,12 @@ Simple Pet API with basic endpoints.
  ## Dependencies:
 - install-package Scalar.AspNetCore
 - install-package Swashbuckle.AspNetCore
+
+## Validation Filters
+
+Two packages are required for the validation.
+
+- install-package FluentValidation
+- install-package FluentValidation.DependencyInjectionExtensions
+
+Note the ValidationFilter class and the PetPostValidator which we can create for every ViewModel/Dto that sends data into our API.

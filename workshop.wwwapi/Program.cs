@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using workshop.wwwapi.Data;
 using workshop.wwwapi.Endpoints;
@@ -9,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IRepository, PetRepository>();
+// Would not use `inmemoryDatabase` in a production settings... but good for developing... 
+builder.Services.AddDbContext<DataContext>(options => options.UseInMemoryDatabase("Pets"));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -23,7 +26,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-PetsData.Initialize();
+
 app.ConfigurePetEndpoint();
 
 app.Run();

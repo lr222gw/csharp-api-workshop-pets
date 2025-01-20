@@ -1,4 +1,5 @@
-﻿using workshop.wwwapi.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using workshop.wwwapi.Data;
 using workshop.wwwapi.Models;
 
 namespace workshop.wwwapi.Repository
@@ -11,29 +12,33 @@ namespace workshop.wwwapi.Repository
             this._db = db;
             
         }
-        public Pet AddPet(Pet entity)
-        {            
-            _db.pets.Add(entity);
-            _db.SaveChanges();
+        public async Task<Pet>  AddPet(Pet entity)
+        {
+            //_db.pets.Add(entity); // Not assync
+            //_db.SaveChanges(); // 
+
+            // now async...
+            await _db.pets.AddAsync(entity);
+            await _db.SaveChangesAsync(); 
             return entity;
             
         }
 
-        public bool Delete(int id)
+        public Task<bool > Delete(int id)
         {
 
             throw new System.NotImplementedException();
             
         }
 
-        public Pet GetPet(int id)
+        public Task<Pet > GetPet(int id)
         {
             throw new System.NotImplementedException();
         }
 
-        public IEnumerable<Pet> GetPets()
+        public async Task<IEnumerable<Pet>>  GetPets()
         {
-            return _db.pets.ToList();      
+            return await _db.pets.ToListAsync();
         }
     }
 }

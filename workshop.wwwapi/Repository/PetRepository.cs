@@ -20,16 +20,19 @@ namespace workshop.wwwapi.Repository
             
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new System.NotImplementedException();
-            
-            
+            var target = await _db.Pets.FindAsync(id);
+            _db.Pets.Remove(target);
+            await _db.SaveChangesAsync();
+            return true;
+
+
         }
 
-        public Task<Pet> GetPet(int id)
+        public async Task<Pet> GetPet(int id)
         {
-            throw new System.NotImplementedException();
+            return await _db.Pets.FindAsync(id);
         }
 
         public async Task<IEnumerable<Pet>> GetPets()

@@ -20,7 +20,7 @@ namespace workshop.wwwapi.Endpoints
         [ProducesResponseType(StatusCodes.Status200OK)]
         public static async Task<IResult> GetPets(IRepository repository)
         {
-            var pets = repository.GetPets();
+            var pets = await repository.GetPets();
             return TypedResults.Ok(pets);
         }
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -36,7 +36,7 @@ namespace workshop.wwwapi.Endpoints
                 Species = model.Species,
                 Age = model.Age
             };
-            repository.AddPet(pet);
+            await repository.AddPet(pet);
 
             return TypedResults.Created($"https://localhost:7010/pets/{pet.Id}", pet);
             }
@@ -52,8 +52,8 @@ namespace workshop.wwwapi.Endpoints
         {                        
             try
             {
-                var model = repository.GetPet(id);
-                if (repository.Delete(id)) return Results.Ok(new { When=DateTime.Now, Status="Deleted", Name=model.Name, Age=model.Age, Species=model.Species});
+                var model = await repository.GetPet(id);
+                if (await repository.Delete(id)) return Results.Ok(new { When=DateTime.Now, Status="Deleted", Name=model.Name, Age=model.Age, Species=model.Species});
                 return TypedResults.NotFound();
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace workshop.wwwapi.Endpoints
         {
             try
             {
-                var target = repository.GetPet(id);
+                var target = await repository.GetPet(id);
                 if (target == null) return Results.NotFound();
                 if (model.Name != null) target.Name = model.Name;
                 if (model.Species != null) target.Species = model.Species;
